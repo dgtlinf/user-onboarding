@@ -1,4 +1,4 @@
-# User Onboarding for Laravel
+# User Onboarding for Laravel 10+
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/dgtlinf/user-onboarding.svg?style=flat-square)](https://packagist.org/packages/dgtlinf/user-onboarding)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/dgtlinf/user-onboarding/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/dgtlinf/user-onboarding/actions)
