@@ -4,7 +4,6 @@
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/dgtlinf/user-onboarding/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/dgtlinf/user-onboarding/actions)
 [![Total Downloads](https://img.shields.io/packagist/dt/dgtlinf/user-onboarding.svg?style=flat-square)](https://packagist.org/packages/dgtlinf/user-onboarding)
 [![License](https://img.shields.io/github/license/dgtlinf/user-onboarding.svg?style=flat-square)](LICENSE.md)
-[![Code Quality](https://img.shields.io/codefactor/grade/github/dgtlinf/user-onboarding/main?style=flat-square)](https://www.codefactor.io/repository/github/dgtlinf/user-onboarding)
 ![PHP Version](https://img.shields.io/badge/PHP-%5E8.2-blue?style=flat-square)
 ![Laravel Version](https://img.shields.io/badge/Laravel-%5E10-orange?style=flat-square)
 
