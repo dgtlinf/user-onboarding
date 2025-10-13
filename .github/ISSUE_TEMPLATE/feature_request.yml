@@ -1,0 +1,75 @@
+name: 💡 Feature Request
+description: Suggest a new feature or improvement for the package
+title: "[Feature]: "
+labels: ["enhancement", "discussion needed"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve this library!
+        Please fill out the details below to describe your idea clearly.
+
+  - type: input
+    id: package-version
+    attributes:
+      label: Package Version
+      description: What version of library are you currently using?
+      placeholder: e.g. v1.0.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem would this feature solve? Why is it important?
+      placeholder: |
+        Example:
+        - I need better control over some part of the library.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How do you imagine this working?
+      placeholder: |
+        Example:
+        - Add a configurable service.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you tried other approaches, workarounds, or existing packages?
+      placeholder: |
+        Example:
+        - Tried adding a custom generator class but failed.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature to you?
+      options:
+        - Low — nice to have
+        - Medium — useful improvement
+        - High — critical for my use case
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I have searched existing feature requests to avoid duplicates.
+          required: true
+        - label: I understand that feature requests are evaluated based on community demand and technical feasibility.
+          required: true

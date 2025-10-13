@@ -1,0 +1,54 @@
+{
+    "name": "dgtlinf/user-onboarding",
+    "description": "A lightweight, stateless user onboarding flow manager for Laravel applications.",
+    "keywords": ["laravel", "onboarding", "user flow", "stateless", "middleware"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Digital Infinity",
+            "email": "office@digitalinfinity.rs"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "spatie/laravel-package-tools": "^1.92"
+    },
+    "require-dev": {
+        "pestphp/pest": "^4.1",
+        "pestphp/pest-plugin-laravel": "^4.0",
+        "orchestra/testbench": "^10.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dgtlinf\\UserOnboarding\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dgtlinf\\UserOnboarding\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "pest"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Dgtlinf\\UserOnboarding\\UserOnboardingServiceProvider"
+            ],
+            "aliases": {
+                "UserOnboarding": "Dgtlinf\\UserOnboarding\\Facades\\UserOnboarding"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}

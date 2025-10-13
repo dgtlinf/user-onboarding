@@ -1,0 +1,88 @@
+name: 🐛 Bug Report
+description: Report something that isn't working as expected in the package
+title: "[Bug]: "
+labels: ["bug", "needs triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug!
+        Please provide as much detail as possible so we can reproduce the issue.
+
+  - type: input
+    id: package-version
+    attributes:
+      label: Package Version
+      description: What version of package are you using?
+      placeholder: e.g. v1.0.0
+    validations:
+      required: true
+
+  - type: input
+    id: laravel-version
+    attributes:
+      label: Laravel Version
+      placeholder: e.g. 11.8.0
+    validations:
+      required: true
+
+  - type: input
+    id: php-version
+    attributes:
+      label: PHP Version
+      placeholder: e.g. 8.3
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      options:
+        - Local (Valet / Sail)
+        - Production
+        - Testing (Pest / PHPUnit)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: What happened? What did you expect to happen instead?
+      placeholder: Provide clear reproduction steps and any error messages.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: A minimal reproducible example is the fastest way to fix a bug.
+      placeholder: |
+        1. Install the package
+        2. Do this...
+        3. Expect that...
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs, Stack Traces, or Screenshots
+      description: Paste any relevant output or screenshots here (optional).
+      render: shell
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I have checked existing issues and confirmed this hasn't been reported.
+          required: true
+        - label: I am using the latest version of this package.
+          required: true

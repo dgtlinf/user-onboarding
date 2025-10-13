@@ -1,0 +1,21 @@
+# dependencies
+/vendor
+/node_modules
+
+# composer artifacts
+composer.lock
+
+# local environment
+.env
+.env.*.local
+.phpunit.result.cache
+
+# IDE & OS
+.idea
+.vscode
+.DS_Store
+Thumbs.db
+
+# test & coverage
+coverage/
+.phpunit.cache
