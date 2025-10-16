@@ -6,6 +6,42 @@
 **Maintained by:** Digital Infinity DOO Novi Sad
 **Website:** [digitalinfinity.rs](https://www.digitalinfinity.rs)
 
+## v1.1.1 - 2025-10-16
+
+### v1.1.1 – Context-Aware Onboarding Middleware
+
+#### 🚀 New Features
+
+- Added **context-aware onboarding middleware** that supports model binding and dynamic route placeholders.
+- Redirects now automatically replace `{company}`, `{team}`, `{id}`, or any `{placeholder}` with the context model’s key.
+- Fully supports multi-flow onboarding via `onboarding.step::flow_name`.
+
+#### 🧠 Improvements
+
+- Simplified and standardized context detection (works for any Eloquent-like model).
+- Backward compatible with previous config syntax (`redirects` can still be simple strings).
+- Cleaner and safer flow handling with JSON (403) or redirect fallback.
+
+#### ✅ Example
+
+```php
+'redirects' => [
+    'default' => '/onboarding',
+    'company_setup' => '/onboarding/company/{company}',
+    'vendor_flow'   => '/onboarding/vendor/{id}',
+],
+
+```
+#### 🧩 Middleware Usage
+
+```php
+Route::middleware('onboarding.step::company_setup')->group(function () {
+    Route::get('/company/{company}/dashboard', DashboardController::class);
+});
+
+```
+This release introduces full context-awareness and flexible dynamic redirects, making onboarding flows compatible with any model-driven route structure.
+
 ## v1.1.0 - 2025-10-16
 
 ### v1.1.0 – Context-Aware Onboarding Flows
@@ -17,6 +53,7 @@
   - You can now pass any contextual object (e.g. `Company`, `Team`, or array) when starting a flow:
     ```php
     $flow = UserOnboarding::start($user, 'company_setup', $company);
+    
     
     ```
   - Each step’s `check` callback now receives both `$user` and `$context` arguments.
@@ -39,6 +76,7 @@
 ```php
 Step::make('billing')
     ->check(fn($user, $company) => $company->hasValidBillingEntity());
+
 
 ```
 ## v1.0.1 - 2025-10-16
