@@ -11,51 +11,61 @@ class EnsureUserOnboardingStepCompleted
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  string|null  $requiredStep
-     * @param  string|null  $flowName
      */
-    public function handle(Request $request, Closure $next, ?string $requiredStep = null, ?string $flowName = 'default'): Response
+    public function handle(Request $request, Closure $next, string $flow = 'default'): Response
     {
         $user = $request->user();
 
         if (! $user) {
-            abort(401, 'Unauthorized');
+            return $next($request);
         }
 
-        $flowName ??= 'default';
+        // Detect context
+        $context = $this->resolveContext($request);
 
-        $flow = UserOnboarding::start($user, $flowName);
+        // Create onboarding flow
+        $flowInstance = UserOnboarding::start($user, ltrim($flow, ':'), $context);
 
-        // Check a specific step
-        if ($requiredStep && ! $flow->isStepCompleted($requiredStep)) {
-            return $this->deny($request, $flowName);
+        if ($flowInstance->isCompleted()) {
+            return $next($request);
         }
 
-        // Check full flow completion
-        if (! $requiredStep && ($flow->steps()->isEmpty() || ! $flow->isCompleted())) {
-            return $this->deny($request, $flowName);
+        // Determine redirect for this flow
+        $redirects = config('user-onboarding.redirects', []);
+        $redirectPattern = $redirects[ltrim($flow, ':')] ?? $redirects['default'] ?? '/onboarding';
+
+        // Inject context key if available
+        if ($context && method_exists($context, 'getKey')) {
+            $redirect = preg_replace('/\{[a-zA-Z_]+\}/', $context->getKey(), $redirectPattern);
+        } else {
+            $redirect = $redirectPattern;
         }
 
-        return $next($request);
+        // JSON or redirect response
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Onboarding incomplete.'], 403);
+        }
+
+        return redirect($redirect);
     }
 
     /**
-     * Return correct denial response (JSON or redirect based on flow).
+     * Resolve context model (from route bindings).
      */
-    protected function deny(Request $request, string $flowName): Response
+    protected function resolveContext(Request $request): mixed
     {
-        if ($request->expectsJson()) {
-            return response()->json([
-                'message' => "Onboarding not completed for flow: {$flowName}."
-            ], 403);
+        $route = $request->route();
+
+        if (! $route) {
+            return null;
         }
 
-        $redirectTo = config("user-onboarding.redirects.{$flowName}")
-            ?? config('user-onboarding.redirects.default', '/onboarding');
+        foreach ($route->parameters() as $param) {
+            if (is_object($param) && method_exists($param, 'getKey')) {
+                return $param;
+            }
+        }
 
-        return redirect($redirectTo);
+        return null;
     }
 }

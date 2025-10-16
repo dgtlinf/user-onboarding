@@ -10,6 +10,7 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        config()->set('app.key', 'base64:'.base64_encode(random_bytes(32)));
     }
 
     protected function getPackageProviders($app)
