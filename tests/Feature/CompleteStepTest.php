@@ -35,3 +35,23 @@ it('dispatches events when steps are completed', function () {
     Event::assertDispatched(StepCompleted::class, fn($e) => $e->step->slug === 'verify_email');
     Event::assertDispatched(OnboardingCompleted::class);
 });
+
+
+it('handles multiple onboarding flows independently', function () {
+    $user = new FakeUser();
+
+    config()->set('user-onboarding.flows', [
+        'default' => [
+            Step::make('profile')->check(fn($u) => false),
+        ],
+        'company_setup' => [
+            Step::make('billing')->check(fn($u) => false),
+        ],
+    ]);
+
+    $userFlow = UserOnboarding::start($user, 'default');
+    $companyFlow = UserOnboarding::start($user, 'company_setup');
+
+    expect($userFlow->current()->slug)->toBe('profile');
+    expect($companyFlow->current()->slug)->toBe('billing');
+});

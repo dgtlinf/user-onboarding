@@ -46,17 +46,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Redirect Path
+    | Onboarding Redirects
     |--------------------------------------------------------------------------
     |
-    | When a user tries to access a protected route but has not completed
-    | their onboarding, they will be redirected to this path.
-    | For API or JSON requests, the middleware will respond with HTTP 403.
-    |
-    | Example:
-    | 'redirect_to' => '/onboarding',
+    | Define where users should be redirected when onboarding is incomplete
+    | for a specific flow. The 'default' route is used if none match.
     |
     */
-
-    'redirect_to' => '/onboarding',
+    'redirects' => [
+        'default' => '/onboarding'
+    ],
 ];

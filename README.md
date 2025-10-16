@@ -1,7 +1,7 @@
 # User Onboarding for Laravel 10+
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/dgtlinf/user-onboarding.svg?style=flat-square)](https://packagist.org/packages/dgtlinf/user-onboarding)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/dgtlinf/user-onboarding/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/dgtlinf/user-onboarding/actions)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/dgtlinf/user-onboarding/run-tests.yml?branch=main\&label=tests\&style=flat-square)](https://github.com/dgtlinf/user-onboarding/actions)
 [![Total Downloads](https://img.shields.io/packagist/dt/dgtlinf/user-onboarding.svg?style=flat-square)](https://packagist.org/packages/dgtlinf/user-onboarding)
 [![License](https://img.shields.io/github/license/dgtlinf/user-onboarding.svg?style=flat-square)](LICENSE.md)
 ![PHP Version](https://img.shields.io/badge/PHP-%5E8.2-blue?style=flat-square)
@@ -52,7 +52,18 @@ return [
         ],
     ],
 
-    'redirect_to' => '/onboarding',
+    /*
+    |--------------------------------------------------------------------------
+    | Onboarding Redirects
+    |--------------------------------------------------------------------------
+    |
+    | Define where users should be redirected when onboarding is incomplete
+    | for a specific flow. The 'default' route is used if none match.
+    |
+    */
+    'redirects' => [
+        'default' => '/onboarding',
+    ],
 ];
 ```
 
@@ -88,6 +99,7 @@ public function onboarding()
 }
 ```
 
+
 #### In AppServiceProvider (Global Logic)
 
 You can register a reusable macro for dynamic onboarding flows:
@@ -120,7 +132,7 @@ UserOnboarding::dynamicFlow($user)->progress();
 
 ---
 
-## 🧩 Basic Usage
+## 🧬 Basic Usage
 
 ```php
 use Dgtlinf\UserOnboarding\Facades\UserOnboarding;
@@ -173,7 +185,7 @@ If the user hasn’t completed the `verify_email` step, the middleware denies ac
 
 ---
 
-## 🧠 Creating a Custom Middleware
+## 🤓 Creating a Custom Middleware
 
 By default, this package includes the middleware
 `Dgtlinf\\UserOnboarding\\Http\\Middleware\\EnsureUserOnboardingStepCompleted`.
@@ -251,7 +263,7 @@ UserOnboarding::start($user, $user->isAdmin() ? 'admin' : 'default');
 
 ---
 
-## 🧩 Example Workflow (Blade or Inertia)
+## 🧬 Example Workflow (Blade or Inertia)
 
 When a user tries to access a protected route, the middleware redirects them to `/onboarding`. You can use the flow object to determine which step to render next.
 
@@ -377,7 +389,7 @@ Each event carries the `$user` and `$flow` (and `$step` when relevant).
 
 ---
 
-## 🧩 Example Use Cases
+## 🥉 Example Use Cases
 
 * Block certain routes until user setup is finished
 * Show onboarding progress bar in the UI
@@ -397,7 +409,7 @@ php artisan vendor:publish --tag="user-onboarding-config"
 
 ---
 
-## 🧰 Tech Notes
+## 🧮 Tech Notes
 
 * **Stateless**: No database persistence — each step is evaluated live.
 * **Extensible**: Add events, listeners, and custom middleware.
@@ -405,6 +417,6 @@ php artisan vendor:publish --tag="user-onboarding-config"
 
 ---
 
-## 🪪 License
+## 🖦 License
 
 MIT License © [Digital Infinity](https://digitalinfinity.rs)

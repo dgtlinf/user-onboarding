@@ -15,8 +15,9 @@ class EnsureUserOnboardingStepCompleted
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @param  string|null  $requiredStep
+     * @param  string|null  $flowName
      */
-    public function handle(Request $request, Closure $next, ?string $requiredStep = null): Response
+    public function handle(Request $request, Closure $next, ?string $requiredStep = null, ?string $flowName = 'default'): Response
     {
         $user = $request->user();
 
@@ -24,32 +25,37 @@ class EnsureUserOnboardingStepCompleted
             abort(401, 'Unauthorized');
         }
 
-        // Always build the flow from config so we have real steps
-        $flow = UserOnboarding::start($user, 'default');
+        $flowName ??= 'default';
 
-        // If a specific step is required
+        $flow = UserOnboarding::start($user, $flowName);
+
+        // Check a specific step
         if ($requiredStep && ! $flow->isStepCompleted($requiredStep)) {
-            return $this->deny($request);
+            return $this->deny($request, $flowName);
         }
 
-        // If no specific step required, ensure the full onboarding is done
+        // Check full flow completion
         if (! $requiredStep && ($flow->steps()->isEmpty() || ! $flow->isCompleted())) {
-            return $this->deny($request);
+            return $this->deny($request, $flowName);
         }
 
         return $next($request);
     }
 
     /**
-     * Return the correct denial response (redirect or JSON 403).
+     * Return correct denial response (JSON or redirect based on flow).
      */
-    protected function deny(Request $request): Response
+    protected function deny(Request $request, string $flowName): Response
     {
         if ($request->expectsJson()) {
-            return response()->json(['message' => 'Onboarding not completed.'], 403);
+            return response()->json([
+                'message' => "Onboarding not completed for flow: {$flowName}."
+            ], 403);
         }
 
-        $redirectTo = config('user-onboarding.redirect_to', '/onboarding');
+        $redirectTo = config("user-onboarding.redirects.{$flowName}")
+            ?? config('user-onboarding.redirects.default', '/onboarding');
+
         return redirect($redirectTo);
     }
 }
