@@ -6,6 +6,41 @@
 **Maintained by:** Digital Infinity DOO Novi Sad
 **Website:** [digitalinfinity.rs](https://www.digitalinfinity.rs)
 
+## v1.1.0 - 2025-10-16
+
+### v1.1.0 – Context-Aware Onboarding Flows
+
+#### 🚀 New Features
+
+- Added **context support** to onboarding flows.
+  
+  - You can now pass any contextual object (e.g. `Company`, `Team`, or array) when starting a flow:
+    ```php
+    $flow = UserOnboarding::start($user, 'company_setup', $company);
+    
+    ```
+  - Each step’s `check` callback now receives both `$user` and `$context` arguments.
+  
+- All core classes updated to support context:
+  
+  - `Step::isCompleted($user, $context)`
+  - `UserOnboardingFlow::__construct($user, $steps, $context)`
+  - `UserOnboardingManager::start($user, $flowName, $context)`
+  
+
+#### 🧠 Improvements
+
+- Full docblocks added for all major classes.
+- Improved test coverage with new **Feature test** for context-based onboarding.
+- Maintains full backward compatibility — existing flows without context work as before.
+
+#### 🧩 Example
+
+```php
+Step::make('billing')
+    ->check(fn($user, $company) => $company->hasValidBillingEntity());
+
+```
 ## v1.0.1 - 2025-10-16
 
 ### v1.0.1
